@@ -1,0 +1,28 @@
+-- ============================================================
+-- Order Enrichment Query
+-- Mirrors: ProgramStage.sql from company repo
+--
+-- This joins the orders stream with dimension tables using
+-- temporal joins (FOR SYSTEM_TIME AS OF).
+--
+-- In batch (Spark), you'd just do a regular JOIN.
+-- In streaming, the dimension tables are constantly changing,
+-- so you need temporal joins to get the value AT THE TIME
+-- the order was placed.
+-- ============================================================
+
+-- TODO: Write your temporal join query here
+-- Hint: Start simple, then add more joins
+--
+-- SELECT
+--     o.order_id,
+--     o.customer_id,
+--     c.first_name,
+--     c.last_name,
+--     c.tier,
+--     o.order_status,
+--     o.total_amount,
+--     o.created_at
+-- FROM orders_stream AS o
+-- INNER JOIN ecommerce.customers FOR SYSTEM_TIME AS OF o.proc_time AS c
+--     ON c.customer_id = o.customer_id

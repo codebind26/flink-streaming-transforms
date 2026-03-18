@@ -1,0 +1,26 @@
+-- ============================================================
+-- Revenue by Category (Windowed)
+--
+-- This uses TUMBLE windows - a streaming concept.
+-- A tumble window groups events into fixed-size, non-overlapping
+-- time buckets (e.g., every 5 minutes).
+--
+-- In Spark batch, you'd partition by date. In streaming,
+-- windows give you real-time aggregations over time slices.
+-- ============================================================
+
+-- TODO: Write your windowed aggregation here
+-- Hint:
+--
+-- SELECT
+--     window_start,
+--     window_end,
+--     p.category,
+--     SUM(oi.quantity * oi.unit_price) AS revenue,
+--     COUNT(DISTINCT oi.order_id) AS order_count
+-- FROM TABLE(
+--     TUMBLE(TABLE order_items_stream, DESCRIPTOR(proc_time), INTERVAL '5' MINUTES)
+-- ) AS oi
+-- JOIN ecommerce.products FOR SYSTEM_TIME AS OF oi.proc_time AS p
+--     ON p.product_id = oi.product_id
+-- GROUP BY window_start, window_end, p.category

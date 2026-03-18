@@ -1,0 +1,22 @@
+-- ============================================================
+-- Real-time Inventory Tracking
+--
+-- This is a streaming aggregation - something that doesn't
+-- exist in batch. The result is a continuously updating table
+-- showing current stock per product per warehouse.
+--
+-- In Spark batch, you'd just do GROUP BY on the full dataset.
+-- In streaming, the aggregation maintains STATE and updates
+-- incrementally as new events arrive.
+-- ============================================================
+
+-- TODO: Write your streaming aggregation here
+-- Hint:
+--
+-- SELECT
+--     product_id,
+--     warehouse_id,
+--     SUM(quantity_change) AS current_stock,
+--     COUNT(*) AS total_events
+-- FROM inventory_events_stream
+-- GROUP BY product_id, warehouse_id

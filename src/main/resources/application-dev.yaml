@@ -1,0 +1,8 @@
+# Mirrors: application-dev.yaml from company flink-udm-ned repo
+application.job: OrderEnrichmentJob
+application.mode: STREAMING
+application.parallelism: 2
+application.max.parallelism: 4
+catalog:
+    name: ecommerce
+    warehouse: /opt/paimon/warehouse
