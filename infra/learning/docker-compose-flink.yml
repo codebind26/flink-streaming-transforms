@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  jobmanager:
+    image: flink:1.20.1-java11
+    container_name: flink-jobmanager
+    ports:
+      - "8081:8081"       # Flink Web UI
+    command: jobmanager
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: jobmanager
+        state.backend: rocksdb
+        state.checkpoints.dir: file:///opt/flink/checkpoints
+        execution.checkpointing.interval: 60000
+    volumes:
+      - flink-checkpoints:/opt/flink/checkpoints
+
+  taskmanager:
+    image: flink:1.20.1-java11
+    container_name: flink-taskmanager
+    depends_on:
+      - jobmanager
+    command: taskmanager
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: jobmanager
+        taskmanager.numberOfTaskSlots: 4
+        state.backend: rocksdb
+        state.checkpoints.dir: file:///opt/flink/checkpoints
+        execution.checkpointing.interval: 60000
+    volumes:
+      - flink-checkpoints:/opt/flink/checkpoints
+
+# Use the same Docker network as Postgres so Flink can reach it by hostname
+networks:
+  default:
+    name: learning_default    # matches the network created by docker-compose-postgres.yml
+
+volumes:
+  flink-checkpoints:
